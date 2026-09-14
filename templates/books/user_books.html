@@ -1,0 +1,7 @@
+{% if not books %}
+<h3>nothing to show</h3>
+{% else %} {% for book in books %}
+<div>
+  <h6>{{book.title}}</h6>
+</div>
+{% endfor %} {% endif %}
