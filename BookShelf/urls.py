@@ -21,5 +21,6 @@ from . import viwes
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',viwes.home_page, name="home"),
-    # path('books/',include('books/urls'))
+    path('users/',include('users.urls')),
+    # path('books/',include('books.urls'))
 ]
