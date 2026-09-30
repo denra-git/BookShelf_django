@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from . import viwes
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',viwes.home_page, name="home"),
+    path('',views.home_page, name="home"),
     path('users/',include('users.urls')),
     path('books/',include('books.urls'))
 ]

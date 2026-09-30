@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import login,logout,authenticate
 from .forms import RegistrationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
+
 
 def register(request):
     
@@ -20,6 +23,7 @@ def register(request):
             return redirect('user_books')
         
         return render(request, 'users/register.html', {'form': form})
+ 
     
 def login_view(request):
     
@@ -32,20 +36,21 @@ def login_view(request):
         password = request.POST['password']
         
         user = authenticate(username = username, password = password)
-        print(user)
         
         if user is not None:
             login(request,user)
             return redirect('users:profile')
+        
+        else:
+           messages.error(request,'invalid pass or username') 
            
     return render(request,"users/login.html")
 
-
 @login_required
-def logout_view(requset):
-    if requset.method == 'POST':
-        logout(requset)
-        return redirect('users:login')
+@require_http_methods(['POST'])
+def logout_view(request):
+    logout(request)
+    return redirect('users:login')
     
     
 @login_required
