@@ -10,6 +10,7 @@
   <body>
     <div class="nav_bar">
       <a href="{% url 'home' %}" class="nav_link">home</a>
+      <a href="{% url 'users:profile' %}" class="nav_link">profile</a>
     </div>
 
     {% block content %} {% endblock %}

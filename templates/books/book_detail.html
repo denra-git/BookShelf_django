@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %}
+<h1>{{book.title}}</h1>
+<h2>author : {{book.author}}</h2>
+
+{% if book.cover %}
+<img src="{{ book.cover.url }}" alt="{{ book.title }}" />
+{% else %}
+<p>No cover available.</p>
+{% endif %}
+
+<a href="{% url 'books:edit_book' book.id %}"><button>EDIT</button></a>
+
+<form
+  method="POST"
+  action="{% url 'books:delete_book' id=book.id %}"
+  onsubmit="return confirm('Are you sure you want to delete this book?');"
+>
+  {% csrf_token %}
+  <button type="submit">Delete</button>
+</form>
+
+<a href="{% url 'books:user_book' %}"><button>RETURN TO BOOKS</button></a>
+
+{% endblock %}

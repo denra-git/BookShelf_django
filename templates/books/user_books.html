@@ -1,7 +1,10 @@
-{% if not books %}
+{% extends "base.html" %} {% block content %} {% if not books %}
 <h3>nothing to show</h3>
 {% else %} {% for book in books %}
 <div>
-  <h6>{{book.title}}</h6>
+  <a href="{% url 'books:book_detail' book.id %}"> <h6>{{book.title}}</h6> </a>
 </div>
 {% endfor %} {% endif %}
+
+<a href="{% url 'books:add_book'  %}"><button>add book</button></a>
+{% endblock %}

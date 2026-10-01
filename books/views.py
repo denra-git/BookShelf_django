@@ -3,7 +3,6 @@ from .models import Book
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm
 
-
 @login_required
 def user_book(request):
     books = Book.objects.filter(owner=request.user)
@@ -14,7 +13,7 @@ def add_book(request):
         
     if request.method == 'POST' :
         
-        form = BookForm(request.POST)
+        form = BookForm(request.POST,request.FILES)
  
         if form.is_valid():
             book = form.save(commit=False)
@@ -24,25 +23,49 @@ def add_book(request):
         
     else:
         form = BookForm()
-        
-    books = Book.objects.filter(owner = request.user).order_by("-id")
-    return render(request,"books/add_form.html",{"form" :form})  
+    
+    return render(request,"books/add_form.html",{"form" : form})  
 
 @login_required
-def edit_book(request):
-    book = Book.objects.get(id=book_id)
-    if book.owner == request.user:
-        #edit the book
-        pass
+def edit_book(request,id):
+    
+    book = Book.objects.get(id=id)
+    
+    if book.owner != request.user:
+         return redirect('books:user_book')
+     
+    if request.method == 'GET':
+        form = BookForm(instance=book)
+        return render(request,'books/add_form.html',{'form':form})
+        
     else:
-        pass
+        form = BookForm(request.POST,request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('books:book_detail', id=book.id)
+        
+        else:
+            return render(request,'books/add_form.html',{'form':form})
     
 
 @login_required
-def delete_book(request):
-    book = Book.objects.get(id=book_id)
-    if book.owner == request.user:
-        #delete the book
-        pass
-    else:
-            pass
+def delete_book(request,id):
+    
+    book = Book.objects.get(id=id)
+    
+    if book.owner != request.user:
+        return redirect('books:user_book')
+    
+    if request.method == 'POST':   
+        book.delete()
+        return redirect('books:user_book')
+        
+        
+@login_required        
+def book_detail(request,id):
+    book = Book.objects.get(id=id)
+    
+    if book.owner != request.user:
+        return redirect('books:user_book')
+    
+    return render(request,'books/book_detail.html',{'book':book})

@@ -20,7 +20,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request,user)
-            return redirect('user_books')
+            return redirect('books:user_book')
         
         return render(request, 'users/register.html', {'form': form})
  
@@ -49,8 +49,9 @@ def login_view(request):
 @login_required
 @require_http_methods(['POST'])
 def logout_view(request):
-    logout(request)
-    return redirect('users:login')
+    if request.method == 'POST':
+        logout(request)
+        return redirect('users:login')
     
     
 @login_required
