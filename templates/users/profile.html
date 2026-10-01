@@ -1,7 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 
 <h2>Hello {{user.username}}</h2>
-<form method="POST" action="{% url 'users:logout' %}">
+<form
+  method="POST"
+  action="{% url 'users:logout' %}"
+  onsubmit="return confirm('Are you sure you want to delete this book?');"
+>
   {% csrf_token %}
   <button type="submit">Logout</button>
 </form>
