@@ -1,8 +1,8 @@
-from django.shortcuts import render,redirect
-from .models import Book
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import BookForm
 from django.contrib import messages
+from .models import Book
+from .forms import BookForm
 
 @login_required
 def user_book(request):
@@ -30,10 +30,11 @@ def add_book(request):
     
     return render(request,"books/add_form.html",{"form" : form})  
 
+
 @login_required
 def edit_book(request,id):
     
-    book = Book.objects.get(id=id)
+    book = get_object_or_404(Book,id=id)
     
     if book.owner != request.user:
          return redirect('books:user_book')
@@ -56,7 +57,7 @@ def edit_book(request,id):
 @login_required
 def delete_book(request,id):
     
-    book = Book.objects.get(id=id)
+    book = get_object_or_404(Book,id=id)
     
     if book.owner != request.user:
         return redirect('books:user_book')
@@ -69,7 +70,8 @@ def delete_book(request,id):
         
 @login_required        
 def book_detail(request,id):
-    book = Book.objects.get(id=id)
+    
+    book = get_object_or_404(Book,id=id)
     
     if book.owner != request.user:
         return redirect('books:user_book')

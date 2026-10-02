@@ -46,14 +46,14 @@ class BookAccessTests(TestCase):
         
         
     def test_user_can_edit_own_book(self):
-            user = User.objects.create_user(username='a',password='passa123')
-            book = Book.objects.create(title='book_title',author='author',owner=user)
-            
-            self.client.force_login(user)
-            
-            response = self.client.get(reverse('books:edit_book', kwargs={'id':book.id}))
-            
-            self.assertEqual(response.status_code,200) 
+        user = User.objects.create_user(username='a',password='passa123')
+        book = Book.objects.create(title='book_title',author='author',owner=user)
+        
+        self.client.force_login(user)
+        
+        response = self.client.get(reverse('books:edit_book', kwargs={'id':book.id}))
+        
+        self.assertEqual(response.status_code,200) 
             
             
     def test_user_can_delete_own_book(self):
@@ -139,3 +139,34 @@ class BookMessageTests(MessagesTestMixin, TestCase):
             
                 
                 
+class BookErrorTests(TestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(username='a')
+
+
+    def test_nonexistent_book_detail_id_returns_404(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.get(reverse('books:book_detail',kwargs={'id':313313313}))
+        
+        self.assertEqual(response.status_code,404)
+        
+    
+    def test_nonexistent_book_edit_id_returns_404(self):
+        
+        self.client.force_login(self.user)
+            
+        response = self.client.get(reverse('books:edit_book',kwargs={'id':313313313}))
+        
+        self.assertEqual(response.status_code,404)
+        
+        
+    def test_nonexistent_book_delete_id_returns_404(self):
+        
+        self.client.force_login(self.user)
+            
+        response = self.client.get(reverse('books:delete_book',kwargs={'id':313313313}))
+        
+        self.assertEqual(response.status_code,404)
