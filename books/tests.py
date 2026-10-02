@@ -170,3 +170,55 @@ class BookErrorTests(TestCase):
         response = self.client.get(reverse('books:delete_book',kwargs={'id':313313313}))
         
         self.assertEqual(response.status_code,404)
+        
+        
+        
+class BookCRUDTests(TestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(username='a')
+        self.book = Book.objects.create(title='title',author='author',owner=self.user)
+        
+    
+    def test_add_book(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.post(reverse('books:add_book'),{'title':'title','author':'author'})
+        
+        book = Book.objects.filter(title='title',owner=self.user)
+        
+        self.assertRedirects(response,reverse('books:user_book'),status_code=302)
+        self.assertTrue(book.exists())
+        
+    
+    def test_read_book_detail(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.get(reverse('books:book_detail',kwargs={'id':self.book.id}))
+        
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(self.book , response.context['book'])
+        
+        
+    def test_updating_book(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.post(reverse('books:edit_book',kwargs={'id':self.book.id}),{'title':'new_title','author':'author'})
+        
+        self.book.refresh_from_db()
+        
+        self.assertRedirects(response,reverse('books:book_detail',kwargs={'id':self.book.id}))
+        self.assertEqual(self.book.title ,'new_title' )
+       
+        
+    def test_delete_book(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.post(reverse('books:delete_book',kwargs={'id': self.book.id}))
+        
+        self.assertRedirects(response,reverse('books:user_book'),status_code=302)
+        self.assertFalse(Book.objects.filter(id=self.book.id).exists())
