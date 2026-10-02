@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Book
+from django.contrib import messages
+from django.contrib.messages.storage.base import Message
+from django.contrib.messages.test import MessagesTestMixin
+from .models import Book,Category
 
 
 class BookAccessTests(TestCase):
@@ -43,10 +46,10 @@ class BookAccessTests(TestCase):
         
         
     def test_user_can_edit_own_book(self):
-            user_a = User.objects.create_user(username='a',password='passa123')
-            book = Book.objects.create(title='book_title',author='author',owner=user_a)
+            user = User.objects.create_user(username='a',password='passa123')
+            book = Book.objects.create(title='book_title',author='author',owner=user)
             
-            self.client.force_login(user_a)
+            self.client.force_login(user)
             
             response = self.client.get(reverse('books:edit_book', kwargs={'id':book.id}))
             
@@ -54,14 +57,85 @@ class BookAccessTests(TestCase):
             
             
     def test_user_can_delete_own_book(self):
-        user_a = User.objects.create_user(username='a',password='passa123')
-        book = Book.objects.create(title='book_title',author='author',owner=user_a)
+        user = User.objects.create_user(username='a',password='passa123')
+        book = Book.objects.create(title='book_title',author='author',owner=user)
         
-        self.client.force_login(user_a)
+        self.client.force_login(user)
         
         response = self.client.post(reverse('books:delete_book', kwargs={'id':book.id}))
         
         self.assertRedirects(response,reverse('books:user_book'),status_code=302) 
         self.assertFalse(Book.objects.filter(id=book.id).exists(),)
         
+  
         
+class BookRelationshipTests(TestCase):
+    
+    def test_correct_owner(self):
+        
+        user = User.objects.create_user(username='a',password='passa123')
+        book = Book.objects.create(title='title',author='author',owner=user)
+        
+        self.assertEqual(user,book.owner)
+        
+    
+    def test_many_to_many_relationship(self):
+        
+        user = User.objects.create_user(username='a',password='passa123')
+        book = Book.objects.create(title='title',author='author',owner=user)
+        category_1 =Category.objects.create(name='novel')
+        category_2 =Category.objects.create(name='poetry')
+        
+        book.categories.add(category_1,category_2)
+        
+        self.assertIn(category_1,book.categories.all())
+        self.assertIn(category_2,book.categories.all())
+ 
+    
+    
+class BookMessageTests(MessagesTestMixin, TestCase):
+    
+        def setUp(self):
+            self.user = User.objects.create_user(username='a')
+            self.book = Book.objects.create(title='title',author='author',owner=self.user)
+        
+        
+        def test_add_book_success_message(self):
+            self.client.force_login(self.user)
+            response = self.client.post(reverse('books:add_book'),{'title':'title','author':'author'})
+
+            expected_messages = [Message(messages.SUCCESS, ". SUCCESSFULLY ADDED .")]
+
+            self.assertRedirects(response,reverse('books:user_book'),status_code=302)
+            self.assertMessages(response, expected_messages, ordered=True)
+        
+        
+        def test_edit_book_success_message(self):
+                
+            self.client.force_login(self.user)
+            
+            response = self.client.post(reverse('books:edit_book',kwargs={'id':self.book.id}),{'title': 'title_edited','author':'author'})
+            
+            expected_messages = [Message(messages.SUCCESS, ". SUCCESSFULLY EDITED .")]
+            
+            self.book.refresh_from_db()
+            
+            self.assertRedirects(response,reverse('books:book_detail',kwargs={'id': self.book.id}),status_code=302)
+            self.assertEqual(self.book.title,'title_edited')
+            self.assertMessages(response, expected_messages, ordered=True)
+         
+                    
+        def test_delete_book_success_message(self):
+            
+            self.client.force_login(self.user)
+            
+            response = self.client.post(reverse('books:delete_book',kwargs={'id':self.book.id}))
+            
+            expected_messages = [Message(messages.SUCCESS,". SUCCESSFULLY DELETED .")]
+            
+            self.assertRedirects(response,reverse('books:user_book'),status_code=302)
+            self.assertFalse(Book.objects.filter(id=self.book.id).exists())
+            self.assertMessages(response, expected_messages, ordered=True)
+            
+                
+                

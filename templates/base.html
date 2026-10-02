@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <title>Book Shelf</title>
   </head>
+  {% for message in messages%}
+  <p>{{message}}</p>
+  {% endfor%}
   <body>
     <div class="nav_bar">
       <a href="{% url 'home' %}" class="nav_link">home</a>

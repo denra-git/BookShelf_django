@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Book
 from django.contrib.auth.decorators import login_required
 from .forms import BookForm
+from django.contrib import messages
 
 @login_required
 def user_book(request):
@@ -20,6 +21,8 @@ def add_book(request):
             book = form.save(commit=False)
             book.owner = request.user
             book.save()
+            form.save_m2m()
+            messages.success(request, ". SUCCESSFULLY ADDED .")
             return redirect('books:user_book')
         
     else:
@@ -43,6 +46,7 @@ def edit_book(request,id):
         form = BookForm(request.POST,request.FILES, instance=book)
         if form.is_valid():
             form.save()
+            messages.success(request, ". SUCCESSFULLY EDITED .")
             return redirect('books:book_detail', id=book.id)
         
         else:
@@ -59,6 +63,7 @@ def delete_book(request,id):
     
     if request.method == 'POST':   
         book.delete()
+        messages.success(request, ". SUCCESSFULLY DELETED .")
         return redirect('books:user_book')
         
         
