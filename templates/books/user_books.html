@@ -1,25 +1,32 @@
 {% extends "base.html" %} {% block content %}
+
 <div class="user_book_head">
   <h1>MY BOOKS</h1>
-  <a href="{% url 'books:add_book'  %}"><button>add book</button></a>
+
+  <a href="{% url 'books:add_book' %}">
+    <button>ADD BOOK</button>
+  </a>
 </div>
 
 {% if not books %}
-<h3>nothing to show</h3>
+
+<h3>Nothing to show</h3>
+
 {% else %}
 
 <div class="books_grid">
   {% for book in books %}
-  <div class="book_card">
+
+  <a href="{% url 'books:book_detail' book.id %}" class="book_card">
     {% if book.cover %}
     <img src="{{ book.cover.url }}" alt="{{ book.title }}" />
     {% else %}
-    <p class="no_cover">No cover available.</p>
+    <div class="no_cover">No cover available.</div>
     {% endif %}
-    <a href="{% url 'books:book_detail' book.id %}">
-      <h6>{{book.title}}</h6>
-    </a>
-  </div>
+
+    <h6>{{ book.title }}</h6>
+  </a>
+
   {% endfor %}
 </div>
 

@@ -1,6 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">ADD BOOK</button>
-</form>
+<div class="book_form_container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">ADD BOOK</button>
+  </form>
+
+  <div class="book_form_back">
+    <a href="{% url 'books:user_book' %}"><button>return to books</button></a>
+  </div>
+</div>
 {% endblock %}
