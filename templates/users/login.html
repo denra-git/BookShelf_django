@@ -1,17 +1,42 @@
 {% extends "base.html" %} {% block content %}
+
 <div class="login_container">
   <h1>LOGIN</h1>
-  <h2>welcome back</h2>
+
+  <h2>Welcome back</h2>
+
   <form method="POST">
     {% csrf_token %}
-    <input type="text" name="username" placeholder="Enter your username" />
-    <input type="password" name="password" placeholder="Enter your password" />
+
+    <label for="username">Username</label>
+
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Enter your username"
+      autocomplete="username"
+      required
+    />
+
+    <label for="password">Password</label>
+
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
+      required
+    />
+
     <button type="submit">LOGIN</button>
   </form>
 
-  <div class="registre_container">
-    <h3>Don't have an account?</h3>
-    <a href="{% url 'users:register' %}">Register</a>
+  <div class="login_form">
+    <p>Don't have an account?</p>
+
+    <a href="{% url 'users:register' %}"> REGISTER </a>
   </div>
 </div>
 

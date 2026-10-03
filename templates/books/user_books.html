@@ -4,15 +4,11 @@
   <h1>MY BOOKS</h1>
 
   <a href="{% url 'books:add_book' %}">
-    <button>ADD BOOK</button>
+    <button type="button">ADD BOOK</button>
   </a>
 </div>
 
-{% if not books %}
-
-<h3>Nothing to show</h3>
-
-{% else %}
+{% if books %}
 
 <div class="books_grid">
   {% for book in books %}
@@ -29,5 +25,9 @@
 
   {% endfor %}
 </div>
+
+{% else %}
+
+<h3>Nothing to show</h3>
 
 {% endif %} {% endblock %}

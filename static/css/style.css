@@ -9,28 +9,36 @@ body {
 }
 
 body {
-  background-color: #f8f4e8;
-  color: #315438;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
 
   display: flex;
   flex-direction: column;
+
+  background-color: #f8f4e8;
+  color: #315438;
+
+  font-family: Arial, sans-serif;
 }
+
+/* =========================
+   Navbar
+========================= */
 
 .nav_bar {
   width: 100%;
-  background-color: #315438;
   padding: 18px 35px;
 
   display: flex;
   align-items: center;
   gap: 35px;
+
+  background-color: #315438;
 }
 
 .nav_link {
   color: #f8f4e8;
   text-decoration: none;
+
   font-size: 17px;
   font-weight: 600;
 }
@@ -39,13 +47,23 @@ body {
   color: #dbe7d7;
 }
 
+/* =========================
+   Main
+========================= */
+
 main {
   width: 100%;
   max-width: 1100px;
+
   margin: 0 auto;
   padding: 40px 25px;
+
   flex: 1;
 }
+
+/* =========================
+   General Elements
+========================= */
 
 h1 {
   color: #315438;
@@ -64,15 +82,16 @@ a:hover {
 }
 
 button {
-  background-color: #5b4636;
-  color: #f8f4e8;
+  padding: 10px 18px;
 
   border: none;
   border-radius: 6px;
 
-  padding: 10px 18px;
+  background-color: #5b4636;
+  color: #f8f4e8;
 
   cursor: pointer;
+
   font-size: 16px;
 }
 
@@ -104,15 +123,24 @@ select:focus {
   outline: 2px solid #315438;
 }
 
+/* =========================
+   Messages
+========================= */
+
 body > p {
   margin: 15px auto;
   padding: 10px 18px;
 
   background-color: #fffdf7;
+
   border-radius: 6px;
 
   color: #315438;
 }
+
+/* =========================
+   Home
+========================= */
 
 .hero {
   min-height: calc(100vh - 250px);
@@ -128,7 +156,9 @@ body > p {
 
 .hero h1 {
   margin: 0;
+
   color: #315438;
+
   font-size: 4.5rem;
   letter-spacing: 4px;
 }
@@ -140,8 +170,6 @@ body > p {
 
   font-size: 1.5rem;
   font-weight: 400;
-
-  text-align: center;
 }
 
 .hero .subtitle {
@@ -153,18 +181,31 @@ body > p {
 
   font-size: 1.1rem;
   line-height: 1.7;
-
-  text-align: center;
 }
 
-.hero a {
-  text-decoration: none;
-}
+.hero_button {
+  display: inline-block;
 
-.hero button {
   padding: 12px 24px;
+
+  background-color: #5b4636;
+  color: #f8f4e8;
+
+  border-radius: 6px;
+
+  text-decoration: none;
+
   font-size: 17px;
 }
+
+.hero_button:hover {
+  background-color: #463629;
+  color: #f8f4e8;
+}
+
+/* =========================
+   Login
+========================= */
 
 .login_container {
   min-height: calc(100vh - 250px);
@@ -179,21 +220,30 @@ body > p {
 }
 
 .login_container h1 {
-  margin-bottom: 5px;
+  margin: 0 0 5px;
 }
 
 .login_container h2 {
-  margin-top: 0;
-  margin-bottom: 25px;
+  margin: 0 0 25px;
+
   font-weight: 400;
 }
 
 .login_container form {
+  margin: 0;
+
   display: flex;
   flex-direction: column;
+
   align-items: center;
-  gap: 35px;
-  margin: 0;
+
+  gap: 20px;
+}
+
+.login_container label {
+  color: #315438;
+
+  font-weight: 600;
 }
 
 .login_container input {
@@ -212,12 +262,12 @@ body > p {
 }
 
 .login_form p {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0 0 15px;
+  margin: 0 0 8px;
 }
+
+/* =========================
+   Register
+========================= */
 
 .register_container {
   min-height: calc(100vh - 250px);
@@ -232,34 +282,37 @@ body > p {
 }
 
 .register_container h1 {
-  margin-bottom: 5px;
+  margin: 0 0 5px;
 }
 
 .register_container h2 {
-  margin-top: 0;
-  margin-bottom: 25px;
+  margin: 0 0 25px;
 
   font-weight: 400;
 }
 
 .register_container form {
+  width: 300px;
+
+  margin: 0;
+
   display: flex;
   flex-direction: column;
 
   align-items: center;
-
-  margin: 0;
 }
 
 .register_container form p {
-  width: 300px;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
 
   align-items: flex-start;
 
-  margin: 0 0 15px;
+  margin: 0 0 20px;
+
+  text-align: left;
 }
 
 .register_container form input {
@@ -268,12 +321,11 @@ body > p {
 
 .register_container .login_form {
   margin-top: 20px;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
 }
+
+/* =========================
+   Profile
+========================= */
 
 .profile_container {
   min-height: calc(100vh - 250px);
@@ -288,11 +340,14 @@ body > p {
 }
 
 .profile_container h1 {
-  margin-bottom: 25px;
+  margin: 0 0 25px;
 }
 
 .profile_container h2 {
   margin: 8px 0;
+
+  color: #5b4636;
+
   font-size: 20px;
   font-weight: 400;
 }
@@ -301,10 +356,15 @@ body > p {
   margin-top: 25px;
 }
 
+/* =========================
+   My Books Header
+========================= */
+
 .user_book_head {
   width: 100%;
 
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -313,12 +373,13 @@ body > p {
 
 .user_book_head h1 {
   margin: 0;
+
   text-align: left;
 }
 
-.user_book_head a {
-  text-decoration: none;
-}
+/* =========================
+   Books Grid
+========================= */
 
 .books_grid {
   width: 100%;
@@ -330,24 +391,29 @@ body > p {
   justify-content: center;
 
   gap: 30px;
-
-  margin-top: 30px;
 }
+
+/* =========================
+   Book Card
+========================= */
 
 .book_card {
   width: 220px;
 
   padding: 12px;
 
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
   background-color: #fffdf7;
 
   border: 1px solid #cbd8c8;
   border-radius: 10px;
 
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
+  color: #315438;
+  text-decoration: none;
 
   text-align: center;
 
@@ -360,33 +426,31 @@ body > p {
   transform: translateY(-5px);
 
   box-shadow: 0 8px 18px rgba(49, 84, 56, 0.18);
+
+  color: #315438;
 }
 
-.book_card img {
-  width: 180px;
-  height: 270px;
+/* Book cover */
 
-  min-width: 180px;
-  max-width: 180px;
-
-  min-height: 270px;
-  max-height: 270px;
-
-  display: block;
-
-  margin: 0 auto;
-
-  object-fit: cover;
-
-  border-radius: 4px;
-}
-
+.book_card img,
 .book_card .no_cover {
   width: 180px;
   height: 270px;
 
-  margin: 0 auto;
+  flex-shrink: 0;
 
+  margin: 0;
+
+  border-radius: 4px;
+}
+
+.book_card img {
+  display: block;
+
+  object-fit: cover;
+}
+
+.book_card .no_cover {
   display: flex;
 
   align-items: center;
@@ -394,120 +458,106 @@ body > p {
 
   background-color: #e9f0e5;
 
-  border-radius: 4px;
-
   color: #5b4636;
 
   font-size: 14px;
-  text-align: center;
 }
 
-.book_card a {
-  width: 100%;
-
-  display: block;
-
-  margin-top: 12px;
-
-  text-align: center;
-  text-decoration: none;
-
-  color: #315438;
-}
+/* Book title */
 
 .book_card h6 {
   width: 100%;
 
-  margin: 0;
+  margin: 12px 0 4px;
   padding: 0;
-
-  text-align: center;
 
   color: #315438;
 
   font-size: 17px;
   line-height: 1.3;
   font-weight: 600;
-}
-
-footer {
-  width: 100%;
-
-  margin-top: auto;
-  padding: 20px;
-
-  background-color: #315438;
-
-  color: #f8f4e8;
 
   text-align: center;
 }
 
+/* =========================
+   Book Detail
+========================= */
+
 .book_detail_container {
   width: 100%;
   max-width: 900px;
+
   margin: 0 auto;
+
   text-align: center;
 }
 
 .book_detail {
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 60px;
+
   margin-bottom: 40px;
 }
-
-/* Cover */
 
 .book_detail_cover img,
 .detail_no_cover {
   width: 240px;
   height: 360px;
+
   object-fit: cover;
+
   border-radius: 6px;
 }
 
 .detail_no_cover {
-  background-color: #e9f0e5;
-  color: #5b4636;
-
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   padding: 20px;
-}
 
-/* Information */
+  background-color: #e9f0e5;
+  color: #5b4636;
+}
 
 .book_detail_info {
   flex: 1;
+
   text-align: left;
 }
 
 .book_detail_info h1 {
   margin: 0 0 15px;
+
   font-size: 2.5rem;
+
   text-align: left;
 }
 
 .book_detail_info h2 {
   margin: 0 0 30px;
+
   font-size: 1.3rem;
   font-weight: 400;
 }
 
-/* Categories */
-
 .book_categories h3 {
   margin-bottom: 12px;
+
   color: #315438;
 }
 
 .category_list {
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 10px;
 }
 
@@ -524,13 +574,14 @@ footer {
   font-size: 14px;
 }
 
-/* Actions */
-
 .book_detail_actions {
   display: flex;
-  justify-content: center;
+
   align-items: center;
+  justify-content: center;
+
   gap: 15px;
+
   margin-bottom: 25px;
 }
 
@@ -542,14 +593,15 @@ footer {
   min-width: 100px;
 }
 
-/* Back link */
-
 .back_to_books {
   display: inline-block;
+
   margin-top: 10px;
 
   color: #315438;
+
   text-decoration: none;
+
   font-weight: 600;
 }
 
@@ -558,87 +610,51 @@ footer {
 }
 
 /* =========================
-   Mobile
+   Add / Edit Book Form
 ========================= */
-
-@media (max-width: 700px) {
-  .book_detail {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .book_detail_info {
-    text-align: center;
-  }
-
-  .book_detail_info h1 {
-    text-align: center;
-    font-size: 2rem;
-  }
-
-  .book_detail_info h2 {
-    font-size: 1.1rem;
-  }
-
-  .category_list {
-    justify-content: center;
-  }
-
-  .book_detail_actions {
-    flex-wrap: wrap;
-  }
-}
-
-.book_card_link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.book_card_link:hover {
-  text-decoration: none;
-  color: inherit;
-}
-
-.book_card_link .book_card {
-  cursor: pointer;
-}
 
 .book_form_container {
   width: 100%;
   max-width: 500px;
+
   margin: 0 auto;
+
   text-align: center;
 }
 
 .book_form_container h1 {
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .book_form_container form {
   width: 100%;
-  margin: 30px 0 0;
+
+  margin: 0;
 
   display: flex;
   flex-direction: column;
+
   align-items: center;
 }
 
-/* Normal fields */
-
 .book_form_container form p {
   width: 100%;
-  margin: 0 0 18px;
 
   display: flex;
   flex-direction: column;
+
   align-items: flex-start;
+
+  margin: 0 0 18px;
 
   text-align: left;
 }
 
 .book_form_container label {
   margin-bottom: 6px;
+
   color: #315438;
+
   font-weight: 600;
 }
 
@@ -655,7 +671,9 @@ footer {
   width: 100%;
 
   display: grid;
+
   grid-template-columns: repeat(2, 1fr);
+
   gap: 10px;
 
   margin-top: 5px;
@@ -663,10 +681,10 @@ footer {
 
 .book_form_container #id_categories label {
   margin: 0;
-
   padding: 10px 12px;
 
   background-color: #e9f0e5;
+
   border: 1px solid #cbd8c8;
   border-radius: 6px;
 
@@ -681,22 +699,178 @@ footer {
 
 .book_form_container #id_categories input[type="checkbox"] {
   width: auto;
+
   margin-right: 7px;
 }
-
-/* Submit button */
 
 .book_form_container button {
   margin-top: 10px;
 }
 
-/* Back link */
-
 .book_form_back {
   display: inline-block;
+
   margin-top: 20px;
 
-  text-decoration: none;
   color: #315438;
+
+  text-decoration: none;
+
   font-weight: 600;
+}
+
+.book_form_back:hover {
+  color: #5b4636;
+}
+
+/* =========================
+   Footer
+========================= */
+
+footer {
+  width: 100%;
+
+  margin-top: auto;
+  padding: 20px;
+
+  background-color: #315438;
+
+  color: #f8f4e8;
+
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 700px) {
+  main {
+    padding: 30px 20px;
+  }
+
+  .nav_bar {
+    padding: 15px 20px;
+
+    flex-wrap: wrap;
+
+    gap: 15px 25px;
+  }
+
+  .hero h1 {
+    font-size: 3.2rem;
+  }
+
+  .hero h2 {
+    font-size: 1.3rem;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+  }
+
+  .hero a {
+    text-decoration: none;
+  }
+
+  .hero button {
+    padding: 12px 24px;
+    font-size: 17px;
+  }
+
+  .hero button {
+    padding: 12px 24px;
+
+    background-color: #5b4636;
+    color: #f8f4e8;
+
+    border: none;
+    border-radius: 6px;
+
+    font-size: 17px;
+    cursor: pointer;
+  }
+
+  .hero button:hover {
+    background-color: #463629;
+  }
+
+  .user_book_head {
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .user_book_head h1 {
+    font-size: 2rem;
+  }
+
+  .books_grid {
+    grid-template-columns: repeat(auto-fill, 180px);
+    gap: 20px;
+  }
+
+  .book_card {
+    width: 180px;
+  }
+
+  .book_card img,
+  .book_card .no_cover {
+    width: 156px;
+    height: 234px;
+  }
+
+  .book_detail {
+    flex-direction: column;
+
+    gap: 30px;
+  }
+
+  .book_detail_info {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .book_detail_info h1 {
+    text-align: center;
+
+    font-size: 2rem;
+  }
+
+  .book_detail_info h2 {
+    font-size: 1.1rem;
+  }
+
+  .category_list {
+    justify-content: center;
+  }
+
+  .book_detail_actions {
+    flex-wrap: wrap;
+  }
+
+  .book_form_container,
+  .register_container,
+  .login_container {
+    width: 100%;
+  }
+
+  .login_container input {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .register_container form,
+  .register_container form p {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .register_container form input {
+    width: 100%;
+  }
 }

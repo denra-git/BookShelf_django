@@ -12,12 +12,12 @@ class Category(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=300)
     author = models.CharField(max_length=200)
-    owner = models.ForeignKey(User,on_delete=models.CASCADE)
-    cover = models.ImageField(upload_to="book_covers/",blank=True,null=True)
-    categories = models.ManyToManyField(Category,blank=True)
+    owner = models.ForeignKey(User , on_delete=models.CASCADE)
+    cover = models.ImageField(upload_to="book_covers/" , blank=True , null=True)
+    categories = models.ManyToManyField(Category , blank=True)
     
     def __str__(self):
-            return self.title
+        return self.title
     
 
 class Review(models.Model):

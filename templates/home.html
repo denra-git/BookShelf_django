@@ -1,11 +1,17 @@
 {% extends "base.html" %} {% block content %}
+
 <div class="hero">
   <h1>BOOKSHELF</h1>
-  <h2>your little library</h2>
+
+  <h2>Your little library</h2>
+
   <p class="subtitle">
-    A place for the books you’ve read, loved, and collected.
+    A place for the books you've read, loved, and collected.
   </p>
-  <a href="{% url 'books:user_book' %}"><button>OPEN MY SHELF</button></a>
+
+  <a href="{% url 'books:user_book' %}" class="hero_button">
+    <button>OPEN MY SHELF</button>
+  </a>
 </div>
 
 {% endblock %}

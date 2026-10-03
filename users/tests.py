@@ -1,39 +1,139 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import authenticate
- 
 
-class UserLogicTest(TestCase):
-    
-    def test_login_completion(self):
-        user = User.objects.create_user(username='a',password='a123')
-        
-        response = self.client.post(reverse('users:login'),{"username":'a',"password":'a123'})
-        
-        self.assertRedirects(response,reverse('users:profile'),status_code=302)
-        self.assertTrue(self.client.session.get('_auth_user_id'))
-        
-        
-    def test_logout_completion(self):
-        user = User.objects.create_user(username='a',password='a123')
+
+class UserLogicTests(TestCase):
+
+    def test_user_can_login(self):
+        User.objects.create_user(
+            username="user",
+            password="pass123",
+        )
+
+        response = self.client.post(
+            reverse("users:login"),
+            {
+                "username": "user",
+                "password": "pass123",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("users:profile"),
+        )
+
+        self.assertTrue(
+            self.client.session.get("_auth_user_id")
+        )
+
+    def test_user_cannot_login_with_invalid_credentials(self):
+        User.objects.create_user(
+            username="user",
+            password="pass123",
+        )
+
+        response = self.client.post(
+            reverse("users:login"),
+            {
+                "username": "user",
+                "password": "wrong-password",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertFalse(
+            self.client.session.get("_auth_user_id")
+        )
+
+    def test_user_can_logout(self):
+        user = User.objects.create_user(
+            username="user",
+            password="pass123",
+        )
+
         self.client.force_login(user)
-        
-        response = self.client.get(reverse('users:logout'))
-        
-        self.assertRedirects(response,reverse('users:login'),status_code=302)
-        self.assertFalse(self.client.session.get('_auth_user_id'))
-        
-        
-    def test_is_user_registered(self):
-        username = 'denra'
-        password1 = 'dnr@@258'
-        password2 = 'dnr@@258'
-        
-        response = self.client.post(reverse('users:register'),{'username':username,'password1':password1,'password2':password2})
-        
-        user = User.objects.filter(username=username)
-        
-        self.assertRedirects(response,reverse('users:profile'),status_code=302)
-        self.assertTrue(user.exists())
-        
+
+        response = self.client.get(
+            reverse("users:logout")
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("users:login"),
+        )
+
+        self.assertFalse(
+            self.client.session.get("_auth_user_id")
+        )
+
+    def test_user_can_register(self):
+        response = self.client.post(
+            reverse("users:register"),
+            {
+                "username": "new_user",
+                "password1": "StrongPass123!",
+                "password2": "StrongPass123!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("users:profile"),
+        )
+
+        self.assertTrue(
+            User.objects.filter(
+                username="new_user"
+            ).exists()
+        )
+
+        self.assertTrue(
+            self.client.session.get("_auth_user_id")
+        )
+
+    def test_authenticated_user_is_redirected_from_login(self):
+        user = User.objects.create_user(
+            username="user",
+            password="pass123",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse("users:login")
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("users:profile"),
+        )
+
+    def test_authenticated_user_can_access_profile(self):
+        user = User.objects.create_user(
+            username="user",
+            password="pass123",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse("users:profile")
+        )
+
+        self.assertEqual(
+            response.status_code,
+            200,
+        )
+
+    def test_anonymous_user_is_redirected_from_profile(self):
+        response = self.client.get(
+            reverse("users:profile")
+        )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('users:login')}?next=/users/profile/",
+        )

@@ -6,7 +6,7 @@
       {% if book.cover %}
       <img src="{{ book.cover.url }}" alt="{{ book.title }}" />
       {% else %}
-      <p class="detail_no_cover">No cover available.</p>
+      <div class="detail_no_cover">No cover available.</div>
       {% endif %}
     </div>
 
@@ -18,11 +18,13 @@
       <div class="book_categories">
         <h3>Categories</h3>
 
-        {% for category in book.categories.all %}
-        <span class="category">{{ category.name }}</span>
-        {% empty %}
-        <span>No categories.</span>
-        {% endfor %}
+        <div class="category_list">
+          {% for category in book.categories.all %}
+          <span class="category"> {{ category.name }} </span>
+          {% empty %}
+          <span>No categories.</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

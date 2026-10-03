@@ -1,12 +1,23 @@
-{% extends 'base.html' %} {% block content %}
+{% extends "base.html" %} {% block content %}
+
 <div class="book_form_container">
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %} {{ form.as_p }}
+  {% if form.instance.pk %}
+  <h1>EDIT BOOK</h1>
+  {% else %}
+  <h1>ADD BOOK</h1>
+  {% endif %}
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }} {% if form.instance.pk %}
+    <button type="submit">SAVE CHANGES</button>
+    {% else %}
     <button type="submit">ADD BOOK</button>
+    {% endif %}
   </form>
 
-  <div class="book_form_back">
-    <a href="{% url 'books:user_book' %}"><button>return to books</button></a>
-  </div>
+  <a href="{% url 'books:user_book' %}" class="book_form_back">
+    ← RETURN TO BOOKS
+  </a>
 </div>
+
 {% endblock %}
