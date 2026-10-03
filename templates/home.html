@@ -1,17 +1,11 @@
-{% load static %}
+{% extends "base.html" %} {% block content %}
+<div class="hero">
+  <h1>BOOKSHELF</h1>
+  <h2>your little library</h2>
+  <p class="subtitle">
+    A place for the books you’ve read, loved, and collected.
+  </p>
+  <a href="{% url 'books:user_book' %}"><button>OPEN MY SHELF</button></a>
+</div>
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <title>Home</title>
-  </head>
-  <body>
-    <h1>___ Welcome to Book Shelf ___</h1>
-    <a href="{% url 'books:user_book' %}"
-      ><button>login to your shell</button></a
-    >
-  </body>
-</html>
+{% endblock %}

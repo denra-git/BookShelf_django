@@ -5,17 +5,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <title>Book Shelf</title>
+    <title>BOOKSHELF</title>
   </head>
-  {% for message in messages%}
-  <p>{{message}}</p>
-  {% endfor%}
+
   <body>
+    {% for message in messages%}
+    <p>{{message}}</p>
+    {% endfor%}
     <div class="nav_bar">
       <a href="{% url 'home' %}" class="nav_link">home</a>
-      <a href="{% url 'users:profile' %}" class="nav_link">profile</a>
+      {% if not user.is_authenticated %}
+      <a href="{% url 'users:register' %}" class="nav_link">Register</a>
+      <a href="{% url 'users:login' %}" class="nav_link">Login</a>
+      {% endif %} {% if user.is_authenticated %}
+      <a href="{% url 'books:user_book' %}" class="nav_link">My Books</a>
+      <a href="{% url 'books:add_book' %}" class="nav_link">Add Book</a>
+      <a href="{% url 'users:profile' %}" class="nav_link">Profile</a>
+      <a href="{% url 'users:logout' %}" class="nav_link">Logout</a>
+      {% endif %}
     </div>
-
-    {% block content %} {% endblock %}
+    <main>{% block content %} {% endblock %}</main>
+    <footer><p>have fun collecting books</p></footer>
   </body>
 </html>

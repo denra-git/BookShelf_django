@@ -1,10 +1,26 @@
-{% extends "base.html" %} {% block content %} {% if not books %}
-<h3>nothing to show</h3>
-{% else %} {% for book in books %}
-<div>
-  <a href="{% url 'books:book_detail' book.id %}"> <h6>{{book.title}}</h6> </a>
+{% extends "base.html" %} {% block content %}
+<div class="user_book_head">
+  <h1>MY BOOKS</h1>
+  <a href="{% url 'books:add_book'  %}"><button>add book</button></a>
 </div>
-{% endfor %} {% endif %}
 
-<a href="{% url 'books:add_book'  %}"><button>add book</button></a>
-{% endblock %}
+{% if not books %}
+<h3>nothing to show</h3>
+{% else %}
+
+<div class="books_grid">
+  {% for book in books %}
+  <div class="book_card">
+    {% if book.cover %}
+    <img src="{{ book.cover.url }}" alt="{{ book.title }}" />
+    {% else %}
+    <p class="no_cover">No cover available.</p>
+    {% endif %}
+    <a href="{% url 'books:book_detail' book.id %}">
+      <h6>{{book.title}}</h6>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endif %} {% endblock %}

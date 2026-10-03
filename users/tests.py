@@ -19,7 +19,7 @@ class UserLogicTest(TestCase):
         user = User.objects.create_user(username='a',password='a123')
         self.client.force_login(user)
         
-        response = self.client.post(reverse('users:logout'))
+        response = self.client.get(reverse('users:logout'))
         
         self.assertRedirects(response,reverse('users:login'),status_code=302)
         self.assertFalse(self.client.session.get('_auth_user_id'))

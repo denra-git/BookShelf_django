@@ -47,9 +47,8 @@ def login_view(request):
     return render(request,"users/login.html")
 
 @login_required
-@require_http_methods(['POST'])
+@require_http_methods(['GET'])
 def logout_view(request):
-    if request.method == 'POST':
         logout(request)
         return redirect('users:login')
     

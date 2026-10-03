@@ -40,7 +40,7 @@ class BookAccessTests(TestCase):
         book = Book.objects.create(title='book_title',author='author',owner=user_b)
         
         self.client.force_login(user_a)
-        response = self.client.get(reverse('books:delete_book', kwargs={'id':book.id}))
+        response = self.client.post(reverse('books:delete_book', kwargs={'id':book.id}))
         
         self.assertRedirects(response,reverse('books:user_book'),status_code=302)  
         
@@ -167,7 +167,7 @@ class BookErrorTests(TestCase):
         
         self.client.force_login(self.user)
             
-        response = self.client.get(reverse('books:delete_book',kwargs={'id':313313313}))
+        response = self.client.post(reverse('books:delete_book',kwargs={'id':313313313}))
         
         self.assertEqual(response.status_code,404)
         
@@ -222,3 +222,14 @@ class BookCRUDTests(TestCase):
         
         self.assertRedirects(response,reverse('books:user_book'),status_code=302)
         self.assertFalse(Book.objects.filter(id=self.book.id).exists())
+        
+        
+    def test_delete_book_get_returns_405(self):
+        
+        self.client.force_login(self.user)
+        
+        response = self.client.get(reverse('books:delete_book',kwargs={'id':self.book.id}))
+        
+        self.assertEqual(response.status_code,405)
+        self.assertTrue(Book.objects.filter(id=self.book.id).exists())
+        

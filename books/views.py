@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.http import require_POST,require_http_methods
 from .models import Book
 from .forms import BookForm
+
 
 @login_required
 def user_book(request):
@@ -32,6 +34,7 @@ def add_book(request):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def edit_book(request,id):
     
     book = get_object_or_404(Book,id=id)
@@ -55,17 +58,17 @@ def edit_book(request,id):
     
 
 @login_required
+@require_POST
 def delete_book(request,id):
     
     book = get_object_or_404(Book,id=id)
     
     if book.owner != request.user:
         return redirect('books:user_book')
-    
-    if request.method == 'POST':   
-        book.delete()
-        messages.success(request, ". SUCCESSFULLY DELETED .")
-        return redirect('books:user_book')
+      
+    book.delete()
+    messages.success(request, ". SUCCESSFULLY DELETED .")
+    return redirect('books:user_book')
         
         
 @login_required        
