@@ -1,82 +1,77 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView,CreateView,DeleteView,UpdateView,ListView
 from django.contrib import messages
-from django.views.decorators.http import require_POST,require_http_methods
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy,reverse
+
 from .models import Book
 from .forms import BookForm
 
 
-@login_required
-def user_book(request):
-    books = Book.objects.filter(owner=request.user)
-    return render(request,'books/user_books.html',{'books' : books})
+class BookListView(LoginRequiredMixin,ListView):
+    model = Book
+    template_name = 'books/user_books.html'
+    context_object_name = "books"
     
-
-@login_required
-def add_book(request):
-        
-    if request.method == 'POST' :
-        
-        form = BookForm(request.POST,request.FILES)
+    def get_queryset(self):
+        return Book.objects.filter(owner=self.request.user).order_by('-id')
  
-        if form.is_valid():
-            book = form.save(commit=False)
-            book.owner = request.user
-            book.save()
-            form.save_m2m()
-            messages.success(request, ". SUCCESSFULLY ADDED .")
-            return redirect('books:user_book')
-        
-    else:
-        form = BookForm()
-    
-    return render(request,"books/add_form.html",{"form" : form})  
 
 
-@login_required
-@require_http_methods(["GET", "POST"])
-def edit_book(request,id):
+class BookCreateView(LoginRequiredMixin,CreateView):
+    model = Book
+    form_class = BookForm
+    template_name = "books/add_form.html"
+    success_url = reverse_lazy('books:user_book')
     
-    book = get_object_or_404(Book,id=id)
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        messages.success(self.request, ". SUCCESSFULLY ADDED .")
+        return super().form_valid(form)
     
-    if book.owner != request.user:
-         return redirect('books:user_book')
-     
-    if request.method == 'GET':
-        form = BookForm(instance=book)
-        return render(request,'books/add_form.html',{'form':form})
-        
-    else:
-        form = BookForm(request.POST,request.FILES, instance=book)
-        if form.is_valid():
-            form.save()
-            messages.success(request, ". SUCCESSFULLY EDITED .")
-            return redirect('books:book_detail', id=book.id)
-        
-        else:
-            return render(request,'books/add_form.html',{'form':form})
     
+ 
+class BookUpdateView(LoginRequiredMixin,UpdateView):
+    model = Book
+    form_class = BookForm
+    template_name = 'books/add_form.html'
+    
+    def get_queryset(self):
+        return Book.objects.filter(owner=self.request.user)
+    
+    def get_success_url(self):
+        return reverse(
+            "books:book_detail",
+            kwargs={"pk": self.object.pk},
+        )
+    
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            ". SUCCESSFULLY EDITED ."
+        )
+        return super().form_valid(form)
 
-@login_required
-@require_POST
-def delete_book(request,id):
+
+
+class BookDeleteView(LoginRequiredMixin,DeleteView):
+    model = Book
+    success_url = reverse_lazy('books:user_book')
+    http_method_names = ["post"]
     
-    book = get_object_or_404(Book,id=id)
+    def get_queryset(self):
+        return Book.objects.filter(owner=self.request.user)    
     
-    if book.owner != request.user:
-        return redirect('books:user_book')
-      
-    book.delete()
-    messages.success(request, ". SUCCESSFULLY DELETED .")
-    return redirect('books:user_book')
+    def form_valid(self,form):        
+        response = super().form_valid(form)
+        messages.success(self.request, ". SUCCESSFULLY DELETED .")
+        return response
         
-        
-@login_required        
-def book_detail(request,id):
+
+
+class BookDetailView(LoginRequiredMixin,DetailView):
+    model = Book
+    template_name = 'books/book_detail.html'
+    context_object_name = 'book'
     
-    book = get_object_or_404(Book,id=id)
-    
-    if book.owner != request.user:
-        return redirect('books:user_book')
-    
-    return render(request,'books/book_detail.html',{'book':book})
+    def get_queryset(self):
+        return Book.objects.filter(owner=self.request.user)

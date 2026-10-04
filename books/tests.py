@@ -53,7 +53,7 @@ class BookAccessTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:book_detail",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             )
         )
 
@@ -66,14 +66,11 @@ class BookAccessTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:book_detail",
-                kwargs={"id": self.other_book.id},
+                kwargs={"pk": self.other_book.id},
             )
         )
 
-        self.assertRedirects(
-            response,
-            reverse("books:user_book"),
-        )
+        self.assertEqual(response.status_code, 404)
 
     def test_user_can_edit_own_book(self):
         self.client.force_login(self.user)
@@ -81,7 +78,7 @@ class BookAccessTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:edit_book",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             )
         )
 
@@ -93,14 +90,11 @@ class BookAccessTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:edit_book",
-                kwargs={"id": self.other_book.id},
+                kwargs={"pk": self.other_book.id},
             )
         )
 
-        self.assertRedirects(
-            response,
-            reverse("books:user_book"),
-        )
+        self.assertEqual(response.status_code, 404)
 
     def test_user_can_delete_own_book(self):
         self.client.force_login(self.user)
@@ -108,7 +102,7 @@ class BookAccessTests(TestCase):
         response = self.client.post(
             reverse(
                 "books:delete_book",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             )
         )
 
@@ -127,14 +121,11 @@ class BookAccessTests(TestCase):
         response = self.client.post(
             reverse(
                 "books:delete_book",
-                kwargs={"id": self.other_book.id},
+                kwargs={"pk": self.other_book.id},
             )
         )
 
-        self.assertRedirects(
-            response,
-            reverse("books:user_book"),
-        )
+        self.assertEqual(response.status_code, 404)
 
         self.assertTrue(
             Book.objects.filter(id=self.other_book.id).exists()
@@ -222,7 +213,7 @@ class BookMessageTests(MessagesTestMixin, TestCase):
         response = self.client.post(
             reverse(
                 "books:edit_book",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             ),
             {
                 "title": "edited title",
@@ -240,7 +231,7 @@ class BookMessageTests(MessagesTestMixin, TestCase):
             response,
             reverse(
                 "books:book_detail",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             ),
         )
 
@@ -261,7 +252,7 @@ class BookMessageTests(MessagesTestMixin, TestCase):
         response = self.client.post(
             reverse(
                 "books:delete_book",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             )
         )
 
@@ -375,7 +366,7 @@ class BookErrorTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:book_detail",
-                kwargs={"id": 313313313},
+                kwargs={"pk": 313313313},
             )
         )
 
@@ -387,7 +378,7 @@ class BookErrorTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:edit_book",
-                kwargs={"id": 313313313},
+                kwargs={"pk": 313313313},
             )
         )
 
@@ -399,7 +390,7 @@ class BookErrorTests(TestCase):
         response = self.client.post(
             reverse(
                 "books:delete_book",
-                kwargs={"id": 313313313},
+                kwargs={"pk": 313313313},
             )
         )
 
@@ -417,7 +408,7 @@ class BookErrorTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:delete_book",
-                kwargs={"id": book.id},
+                kwargs={"pk": book.id},
             )
         )
 
@@ -470,7 +461,7 @@ class BookCRUDTests(TestCase):
         response = self.client.get(
             reverse(
                 "books:book_detail",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             )
         )
 
@@ -486,7 +477,7 @@ class BookCRUDTests(TestCase):
         response = self.client.post(
             reverse(
                 "books:edit_book",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             ),
             {
                 "title": "new title",
@@ -500,7 +491,7 @@ class BookCRUDTests(TestCase):
             response,
             reverse(
                 "books:book_detail",
-                kwargs={"id": self.book.id},
+                kwargs={"pk": self.book.id},
             ),
         )
 

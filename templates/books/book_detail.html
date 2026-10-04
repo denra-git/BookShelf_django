@@ -36,7 +36,7 @@
 
     <form
       method="POST"
-      action="{% url 'books:delete_book' id=book.id %}"
+      action="{% url 'books:delete_book' pk=book.id %}"
       onsubmit="return confirm('Are you sure you want to delete this book?');"
     >
       {% csrf_token %}
