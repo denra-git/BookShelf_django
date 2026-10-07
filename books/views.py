@@ -1,6 +1,7 @@
 from django.views.generic import DetailView,CreateView,DeleteView,UpdateView,ListView
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.db.models import Q
 from django.urls import reverse_lazy,reverse
 
 from .models import Book
@@ -13,7 +14,14 @@ class BookListView(LoginRequiredMixin,ListView):
     context_object_name = "books"
     
     def get_queryset(self):
-        return Book.objects.filter(owner=self.request.user).order_by('-id')
+        books = Book.objects.filter(owner=self.request.user)
+        search =  self.request.GET.get("search")
+        if search:
+            return books.filter(Q (title__icontains=search) | 
+                                Q (author__icontains=search)
+                                )
+            
+        return books.order_by('-id')
  
 
 

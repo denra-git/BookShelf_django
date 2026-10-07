@@ -2,7 +2,18 @@
 
 <div class="user_book_head">
   <h1>MY BOOKS</h1>
+  <div class="search_form">
+    <form method="GET">
+      <input
+        type="text"
+        name="search"
+        placeholder="Search by title or author"
+        value="{{ request.GET.search|default:'' }}"
+      />
 
+      <button type="submit">SEARCH</button>
+    </form>
+  </div>
   <a href="{% url 'books:add_book' %}">
     <button type="button">ADD BOOK</button>
   </a>
