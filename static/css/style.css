@@ -481,6 +481,101 @@ body > p {
 }
 
 /* =========================
+   Pagination
+========================= */
+
+/* Supports class="pagination" or aria-label="Book pages". */
+
+:is(.pagination, nav[aria-label="Book pages"]) {
+  width: 100%;
+
+  margin: 35px 0 0;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+}
+
+:is(.pagination, nav[aria-label="Book pages"]) a,
+:is(.pagination, nav[aria-label="Book pages"]) strong,
+:is(.pagination, nav[aria-label="Book pages"]) span {
+  min-width: 44px;
+  min-height: 44px;
+
+  padding: 10px 14px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #cbd8c8;
+  border-radius: 6px;
+
+  background-color: #fffdf7;
+  color: #315438;
+
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Clickable page numbers, Previous, and Next */
+
+:is(.pagination, nav[aria-label="Book pages"]) a {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+:is(.pagination, nav[aria-label="Book pages"]) a:hover {
+  background-color: #e9f0e5;
+
+  border-color: #315438;
+
+  color: #315438;
+}
+
+/* Keyboard navigation */
+
+:is(.pagination, nav[aria-label="Book pages"]) a:focus-visible {
+  outline: 2px solid #315438;
+  outline-offset: 3px;
+}
+
+/* Current page */
+
+:is(.pagination, nav[aria-label="Book pages"]) [aria-current="page"] {
+  background-color: #315438;
+
+  border-color: #315438;
+
+  color: #f8f4e8;
+
+  font-weight: 700;
+}
+
+/* Optional disabled Previous / Next spans */
+
+:is(.pagination, nav[aria-label="Book pages"]) [aria-disabled="true"] {
+  background-color: #f0eee5;
+
+  border-color: #cbd8c8;
+
+  color: #6b7268;
+
+  cursor: not-allowed;
+}
+
+/* =========================
    Book Detail
 ========================= */
 
@@ -823,6 +918,22 @@ footer p {
     height: 234px;
   }
 
+  /* Pagination on smaller screens */
+
+  :is(.pagination, nav[aria-label="Book pages"]) {
+    margin-top: 25px;
+
+    gap: 6px;
+  }
+
+  :is(.pagination, nav[aria-label="Book pages"]) a,
+  :is(.pagination, nav[aria-label="Book pages"]) strong,
+  :is(.pagination, nav[aria-label="Book pages"]) span {
+    padding: 10px 12px;
+
+    font-size: 14px;
+  }
+
   .book_detail {
     flex-direction: column;
 
@@ -873,4 +984,44 @@ footer p {
   .register_container form input {
     width: 100%;
   }
+}
+
+/* Books page layout */
+main.books_page {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pagination at the bottom, centered above the footer */
+.books_page :is(.pagination, nav[aria-label="Book pages"]) {
+  width: 100%;
+
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 35px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+}
+
+.pagination-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 35px;
+}
+
+.pagination-wrapper .pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }

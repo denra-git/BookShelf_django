@@ -1,18 +1,56 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block main_class %}books_page{% endblock %}{% block content %}
 
 <div class="user_book_head">
   <h1>MY BOOKS</h1>
   <div class="search_form">
-    <form method="GET">
-      <input
+     
+    <form method="GET" class="book_filter_form">
+      <select name="sort">
+    <option value="-id"
+        {% if request.GET.sort == "-id" or not request.GET.sort %}selected{% endif %}>
+        Highest ID first
+    </option>
+    <option value="id"
+        {% if request.GET.sort == "id" %}selected{% endif %}>
+        Lowest ID first
+    </option>
+    <option value="title"
+        {% if request.GET.sort == "title" %}selected{% endif %}>
+        Title A–Z
+    </option>
+    <option value="-title"
+        {% if request.GET.sort == "-title" %}selected{% endif %}>
+        Title Z–A
+    </option>
+</select>
+    <input
         type="text"
         name="search"
         placeholder="Search by title or author"
         value="{{ request.GET.search|default:'' }}"
-      />
+    >
 
-      <button type="submit">SEARCH</button>
-    </form>
+    <select name="category">
+
+        <option value="">All Categories</option>
+
+        {% for category in categories %}
+            <option
+                value="{{ category.id }}"
+                {% if request.GET.category == category.id|stringformat:"s" %}
+                    selected
+                {% endif %}
+            >
+                {{ category.name }}
+            </option>
+        {% endfor %}
+
+    </select>
+
+    <button type="submit">SEARCH</button>
+
+     </form>
+
   </div>
   <a href="{% url 'books:add_book' %}">
     <button type="button">ADD BOOK</button>
@@ -37,8 +75,38 @@
   {% endfor %}
 </div>
 
+<div class="pagination-wrapper">
+<span class="step-links">
+        {% if page_obj.has_previous %}
+            
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+                <strong aria-current="page">{{ num }}</strong>
+            {% else %}
+                <a href="?sort={{ sort|urlencode }}&amp;page={{ num }}">
+                    {{ num }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+           
+        {% endif %}
+    </span>
+    
+
+</div>
+
 {% else %}
 
 <h3>Nothing to show</h3>
 
-{% endif %} {% endblock %}
+{% endif %} 
+
+
+
+{% endblock %}

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.urls import reverse_lazy,reverse
 
-from .models import Book
+from .models import Book,Category
 from .forms import BookForm
 
 
@@ -12,16 +12,32 @@ class BookListView(LoginRequiredMixin,ListView):
     model = Book
     template_name = 'books/user_books.html'
     context_object_name = "books"
+    paginate_by = 10
     
     def get_queryset(self):
         books = Book.objects.filter(owner=self.request.user)
+        
         search =  self.request.GET.get("search")
         if search:
-            return books.filter(Q (title__icontains=search) | 
-                                Q (author__icontains=search)
-                                )
+            books = books.filter(Q (title__icontains=search) | 
+                         Q (author__icontains=search))
             
-        return books.order_by('-id')
+        category = self.request.GET.get("category")
+        if category:
+            books = books.filter(categories__id=category)
+            
+        sort = self.request.GET.get('sort','-id')
+        allowed_sorts = ["-id", "id", "title", "-title"]
+        if sort not in allowed_sorts :
+            sort = '-id'
+            
+        return books.order_by(sort)
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.all()
+        return context
  
 
 
