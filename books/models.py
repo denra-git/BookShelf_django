@@ -20,9 +20,3 @@ class Book(models.Model):
         return self.title
     
 
-class Review(models.Model):
-    description = models.TextField(max_length=1000)
-    owner = models.ForeignKey(User,on_delete=models.CASCADE)
-    rating = models.IntegerField()
-    book = models.ForeignKey(Book,on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
